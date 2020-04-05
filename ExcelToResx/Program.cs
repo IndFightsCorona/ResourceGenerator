@@ -30,7 +30,7 @@ namespace ExcelToResx
 
                     if (excelColumn.ColumnName != "Key" && excelColumn.ColumnName != "Default Value" && !Regex.IsMatch(excelColumn.ColumnName, "^[A-Za-z]{1}[0-9]{1}"))
                     {
-                        string fileName = Path.Combine(oututFolder, String.Format($"{dtEcelData.TableName}/{dtEcelData.TableName}.{excelColumn.ColumnName.ToLower()}.resx"));
+                        string fileName = GetFileName(oututFolder, dtEcelData, excelColumn);
 
                         using (ResXResourceWriter resx = new ResXResourceWriter(fileName))
                         {
@@ -43,6 +43,14 @@ namespace ExcelToResx
                     }
                 }
             }
+        }
+
+        private static string GetFileName(string oututFolder, DataTable dtEcelData, DataColumn excelColumn)
+        {
+            if(excelColumn.ColumnName.ToLower() == "en")
+                return Path.Combine(oututFolder, String.Format($"{dtEcelData.TableName}/{dtEcelData.TableName}.resx"));
+
+            return Path.Combine(oututFolder, String.Format($"{dtEcelData.TableName}/{dtEcelData.TableName}.{excelColumn.ColumnName.ToLower()}.resx"));
         }
     }
 }
